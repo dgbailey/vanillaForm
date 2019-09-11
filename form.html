@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hand Clock</title>
+    <style>
+      
+      *{
+        box-sizing:border-box;
+      }
+
+      form{
+          height:600px;
+          width:300px;
+          margin:300px auto;
+          border:1px solid black;
+          padding:20px;
+
+      }
+      .progress-bar{
+          width:100%;
+          height:40px;
+          border:1px solid gray;
+      }
+      .meter{
+          height:40px;
+          width:0%;
+      }
+      
+      
+        /* Add your CSS here */
+    </style>
+</head>
+<body>
+  <form class="myform">
+      <div class="progress-bar">
+          <div class="meter"></div>
+      </div>
+      <div class="question_container">
+        <input name="question_a" class="question a">
+      </div>
+      <div class="question_container">
+        <input name="question_b" class="question b">
+      </div>
+  </form>
+<!--Add your layout here-->
+<script>
+    class Form{
+        constructor(questions){
+            this.state = {}
+            this.numQuestions = questions
+        }
+
+        handleChanges(e){
+            this.state[e.target.name] = e.target.value
+            console.log("State Change",this.state)
+        }
+
+    }
+    class ProgressBar{
+        constructor(questions,formState){
+            this.denominator = questions
+            // this.numerator = 0
+            // this.percentage = 0
+            this.formState = formState
+            this.keyArr = []
+        }
+
+        updateProgress(){
+            this.keyArr = Object.keys(this.formState)
+            let numerator = 0
+            this.keyArr.forEach(key=> {
+                
+                if(this.formState[key].length > 0){
+                    numerator++
+                }
+                
+                
+            })
+            this.percentage = numerator/this.denominator*100
+            console.log("Progress formState",this.formState)
+            console.log(this.percentage)
+            let bar = document.querySelector(".meter")
+            bar.style.cssText = `width:${this.percentage}%;background:green;`
+            
+        }
+
+    }
+
+    let myForm = new Form(2)
+    let myProgressBar = new ProgressBar(myForm.numQuestions,myForm.state)
+    let inputs = document.querySelectorAll('input')
+    
+    console.log("Inputs",inputs)
+    inputs.forEach(element => element.addEventListener('keyup', myForm.handleChanges.bind(myForm)))
+    inputs.forEach(element => element.addEventListener('keyup', myProgressBar.updateProgress.bind(myProgressBar)))
+    //do these listeners fire synchronously? how?
+
+    
+    
+
+    // Add your JavaScript code here
+</script>
+</body>
+</html>
